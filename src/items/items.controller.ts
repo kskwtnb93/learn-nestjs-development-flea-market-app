@@ -18,13 +18,13 @@ export class ItemsController {
   constructor(private readonly ItemsService: ItemsService) {}
 
   @Get()
-  findAll(): Item[] {
-    return this.ItemsService.findAll();
+  async findAll(): Promise<Item[]> {
+    return await this.ItemsService.findAll();
   }
 
   @Get(':id') // /item/id
-  findById(@Param('id', ParseUUIDPipe) id: string): Item {
-    return this.ItemsService.findById(id);
+  async findById(@Param('id', ParseUUIDPipe) id: string): Promise<Item> {
+    return await this.ItemsService.findById(id);
   }
 
   @Post()
@@ -32,10 +32,10 @@ export class ItemsController {
     return await this.ItemsService.create(createItemDto);
   }
 
-  @Patch(':id')
-  updateStatus(@Param('id', ParseUUIDPipe) id: string): Item {
-    return this.ItemsService.updateStatus(id);
-  }
+  // @Patch(':id')
+  // updateStatus(@Param('id', ParseUUIDPipe) id: string): Item {
+  //   return this.ItemsService.updateStatus(id);
+  // }
 
   @Delete(':id')
   delete(@Param('id', ParseUUIDPipe) id: string): void {
