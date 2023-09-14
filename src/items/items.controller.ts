@@ -38,7 +38,7 @@ export class ItemsController {
   // }
 
   @Delete(':id')
-  delete(@Param('id', ParseUUIDPipe) id: string): void {
-    return this.ItemsService.delete(id);
+  async delete(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
+    return await this.ItemsService.delete(id);
   }
 }

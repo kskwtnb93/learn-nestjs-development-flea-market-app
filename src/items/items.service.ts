@@ -43,7 +43,8 @@ export class ItemsService {
   //   return item;
   // }
 
-  delete(id: string): void {
-    this.items = this.items.filter((item) => item.id !== id);
+  async delete(id: string): Promise<void> {
+    // this.items = this.items.filter((item) => item.id !== id);
+    await this.itemRepository.delete({ id });
   }
 }
