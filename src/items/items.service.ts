@@ -37,11 +37,14 @@ export class ItemsService {
     return await this.itemRepository.createItem(createItemDto);
   }
 
-  // updateStatus(id: string): Item {
-  //   const item = this.findById(id);
-  //   item.status = ItemStatus.SOLD_OUT;
-  //   return item;
-  // }
+  async updateStatus(id: string): Promise<Item> {
+    // const item = this.findById(id);
+    const item = await this.findById(id);
+    item.status = ItemStatus.SOLD_OUT;
+    item.updatedAt = new Date().toISOString();
+    await this.itemRepository.save(item);
+    return item;
+  }
 
   async delete(id: string): Promise<void> {
     // this.items = this.items.filter((item) => item.id !== id);

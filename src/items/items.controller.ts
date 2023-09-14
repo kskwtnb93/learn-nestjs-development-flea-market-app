@@ -32,10 +32,10 @@ export class ItemsController {
     return await this.ItemsService.create(createItemDto);
   }
 
-  // @Patch(':id')
-  // updateStatus(@Param('id', ParseUUIDPipe) id: string): Item {
-  //   return this.ItemsService.updateStatus(id);
-  // }
+  @Patch(':id')
+  async updateStatus(@Param('id', ParseUUIDPipe) id: string): Promise<Item> {
+    return await this.ItemsService.updateStatus(id);
+  }
 
   @Delete(':id')
   async delete(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
