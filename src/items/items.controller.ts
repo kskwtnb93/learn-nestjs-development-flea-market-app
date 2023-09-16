@@ -11,6 +11,8 @@ import {
   Param,
   ParseUUIDPipe,
   UseGuards,
+  UseInterceptors,
+  ClassSerializerInterceptor,
 } from '@nestjs/common';
 import { CreateItemDto } from './dto/create-item.dto';
 // import { Item } from './item.model';
@@ -18,6 +20,7 @@ import { Item } from '../entities/item.entity';
 import { ItemsService } from './items.service';
 
 @Controller('items')
+@UseInterceptors(ClassSerializerInterceptor)
 export class ItemsController {
   constructor(private readonly ItemsService: ItemsService) {}
 

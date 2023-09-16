@@ -1,3 +1,4 @@
+import { Exclude } from 'class-transformer';
 import { Item } from './item.entity';
 import { UserStatus } from './../auth/user-status.enum';
 import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
@@ -11,6 +12,7 @@ export class User {
   username: string;
 
   @Column()
+  @Exclude({ toPlainOnly: true })
   password: string;
 
   @Column()
