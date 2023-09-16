@@ -1,3 +1,4 @@
+import { CredentialsDto } from './dto/credentials.dto';
 import { Body, Controller, Post } from '@nestjs/common';
 import { User } from 'src/entities/user.entity';
 import { AuthService } from './auth.service';
@@ -5,10 +6,17 @@ import { CreateUserDto } from './dto/create-user.dto';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private AuthService: AuthService) {}
+  constructor(private authService: AuthService) {}
 
   @Post('signup')
-  async signup(@Body() createUserDto: CreateUserDto): Promise<User> {
-    return await this.AuthService.signUp(createUserDto);
+  async signUp(@Body() createUserDto: CreateUserDto): Promise<User> {
+    return await this.authService.signUp(createUserDto);
+  }
+
+  @Post('signin')
+  async signIn(
+    @Body() credentialsDto: CredentialsDto,
+  ): Promise<{ accessToken: string }> {
+    return await this.authService.signIn(credentialsDto);
   }
 }
