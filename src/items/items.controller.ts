@@ -54,7 +54,10 @@ export class ItemsController {
 
   @Delete(':id')
   @UseGuards(JwtAuthGuard)
-  async delete(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
-    return await this.ItemsService.delete(id);
+  async delete(
+    @Param('id', ParseUUIDPipe) id: string,
+    @GetUser() user: User,
+  ): Promise<void> {
+    return await this.ItemsService.delete(id, user);
   }
 }
