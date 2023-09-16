@@ -1,5 +1,6 @@
+import { Item } from './item.entity';
 import { UserStatus } from './../auth/user-status.enum';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
 @Entity()
 export class User {
@@ -14,4 +15,7 @@ export class User {
 
   @Column()
   status: UserStatus;
+
+  @OneToMany(() => Item, (item) => item.user)
+  items: Item[];
 }
