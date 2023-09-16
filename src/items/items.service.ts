@@ -1,3 +1,4 @@
+import { User } from './../entities/user.entity';
 import { ItemRepository } from './item.repository';
 import { Injectable, NotFoundException } from '@nestjs/common';
 // import { Item } from './item.model';
@@ -26,7 +27,7 @@ export class ItemsService {
     return found;
   }
 
-  async create(createItemDto: CreateItemDto): Promise<Item> {
+  async create(createItemDto: CreateItemDto, user: User): Promise<Item> {
     // const item: Item = {
     //   id: uuid(),
     //   ...createItemDto,
@@ -34,7 +35,7 @@ export class ItemsService {
     // };
     // this.items.push(item);
     // return item;
-    return await this.itemRepository.createItem(createItemDto);
+    return await this.itemRepository.createItem(createItemDto, user);
   }
 
   async updateStatus(id: string): Promise<Item> {
