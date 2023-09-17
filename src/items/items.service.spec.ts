@@ -24,4 +24,14 @@ describe('ItemsServiceTest', () => {
     itemsService = module.get<ItemsService>(ItemsService);
     itemRepository = module.get<ItemRepository>(ItemRepository);
   });
+
+  describe('findAll', () => {
+    it('正常系', async () => {
+      const expected = [];
+      itemRepository.find.mockResolvedValue(expected);
+      const result = await itemsService.findAll();
+
+      expect(result).toEqual(expected);
+    });
+  });
 });
