@@ -39,6 +39,7 @@ export class ItemsService {
     // };
     // this.items.push(item);
     // return item;
+    console.log(user.status);
     return await this.itemRepository.createItem(createItemDto, user);
   }
 
