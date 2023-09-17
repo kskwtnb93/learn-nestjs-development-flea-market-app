@@ -1,8 +1,15 @@
+import { Test } from '@nestjs/testing';
 import { ItemRepository } from './item.repository';
 import { ItemsService } from './items.service';
-import { Test } from 'nestjs/testing';
+
+const mockItemRepository = () => ({
+  find: jest.fn(),
+});
 
 describe('ItemsServiceTest', () => {
+  let itemsService;
+  let itemRepository;
+
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       providers: [
@@ -14,7 +21,7 @@ describe('ItemsServiceTest', () => {
       ],
     }).compile();
 
-    itemService = module.get<ItemsService>(ItemsService);
+    itemsService = module.get<ItemsService>(ItemsService);
     itemRepository = module.get<ItemRepository>(ItemRepository);
   });
 });
