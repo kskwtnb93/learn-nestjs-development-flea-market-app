@@ -9,6 +9,7 @@ import { ItemsService } from './items.service';
 const mockItemRepository = () => ({
   find: jest.fn(),
   findOne: jest.fn(),
+  createItem: jest.fn(),
 });
 
 const mockUser1 = {
@@ -77,6 +78,33 @@ describe('ItemsServiceTest', () => {
       await expect(itemsService.findById('test-id')).rejects.toThrow(
         NotFoundException,
       );
+    });
+  });
+
+  describe('create', () => {
+    it('正常系', async () => {
+      const expected = {
+        id: 'test-id',
+        name: 'PC',
+        price: 50000,
+        description: '',
+        status: ItemStatus.ON_SALE,
+        createdAt: '',
+        updatedAt: '',
+        userId: mockUser1.id,
+        user: mockUser1,
+      };
+      itemRepository.createItem.mockResolvedValue(expected);
+      const result = await itemsService.create(
+        {
+          name: 'PC',
+          price: 50000,
+          description: '',
+        },
+        mockUser1,
+      );
+
+      expect(result).toEqual(expected);
     });
   });
 });
