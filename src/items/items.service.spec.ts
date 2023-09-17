@@ -1,4 +1,4 @@
-import { NotFoundException } from '@nestjs/common';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 
 import { UserStatus } from '../auth/user-status.enum';
@@ -10,6 +10,7 @@ const mockItemRepository = () => ({
   find: jest.fn(),
   findOne: jest.fn(),
   createItem: jest.fn(),
+  save: jest.fn(),
 });
 
 const mockUser1 = {
@@ -23,6 +24,17 @@ const mockUser2 = {
   username: 'test2',
   password: '1234',
   status: UserStatus.FREE,
+};
+const mockItem1 = {
+  id: 'test-id',
+  name: 'PC',
+  price: 50000,
+  description: '',
+  status: ItemStatus.ON_SALE,
+  createdAt: '',
+  updatedAt: '',
+  userId: mockUser1.id,
+  user: mockUser1,
 };
 
 describe('ItemsServiceTest', () => {
@@ -56,17 +68,7 @@ describe('ItemsServiceTest', () => {
 
   describe('findById', () => {
     it('正常系', async () => {
-      const expected = {
-        id: 'test-id',
-        name: 'PC',
-        price: 50000,
-        description: '',
-        status: ItemStatus.ON_SALE,
-        createdAt: '',
-        updatedAt: '',
-        userId: mockUser1.id,
-        user: mockUser1,
-      };
+      const expected = mockItem1;
       itemRepository.findOne.mockResolvedValue(expected);
       const result = await itemsService.findById('test-id');
 
@@ -83,17 +85,7 @@ describe('ItemsServiceTest', () => {
 
   describe('create', () => {
     it('正常系', async () => {
-      const expected = {
-        id: 'test-id',
-        name: 'PC',
-        price: 50000,
-        description: '',
-        status: ItemStatus.ON_SALE,
-        createdAt: '',
-        updatedAt: '',
-        userId: mockUser1.id,
-        user: mockUser1,
-      };
+      const expected = mockItem1;
       itemRepository.createItem.mockResolvedValue(expected);
       const result = await itemsService.create(
         {
@@ -105,6 +97,23 @@ describe('ItemsServiceTest', () => {
       );
 
       expect(result).toEqual(expected);
+    });
+  });
+
+  describe('updateStatus', () => {
+    const mockItem = mockItem1;
+
+    it('正常系', async () => {
+      itemRepository.findOne.mockResolvedValue(mockItem);
+      await itemsService.updateStatus('test-id', mockUser2);
+      expect(itemRepository.save).toHaveBeenCalled(); // itemRepository の seve メソッドが呼び出されれば成功
+    });
+
+    it('異常系: 自身の商品を購入', async () => {
+      itemRepository.findOne.mockResolvedValue(mockItem);
+      await expect(
+        itemsService.updateStatus('test-id', mockUser1),
+      ).rejects.toThrow(BadRequestException);
     });
   });
 });
